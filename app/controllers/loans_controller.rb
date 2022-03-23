@@ -3,9 +3,18 @@ class LoansController < ApplicationController
   protect_from_forgery except: :create # this is for auth error
 
   def index
-    loans = Loan.all
+    loans = Loan.where(is_active: true)
 
     render json: { data: loans }, status: :ok
+  end
+
+  def show
+    loan = Loan.find(params[:id])
+    if loan.is_active
+      render json: { data: loan }, status: :ok
+    else
+      render json: { message: "Loan not found" }, status: :not_found
+    end
   end
 
   def create
@@ -22,7 +31,7 @@ class LoansController < ApplicationController
         render json: { data: loan }, status: :created
       end
     else
-      render json: { error: 'Out of stock' }, status: :bad_request
+      render json: { error: 'Out of stock' }, status: :no_content
     end
 
   end
@@ -31,7 +40,7 @@ class LoansController < ApplicationController
     loan = Loan.find(params[:id])
 
     if loan.return_date 
-      render json: { meessage: 'This book has been returned'}, status: :bad_request
+      render json: { meessage: 'This book has been returned'}, status: :no_content
       return
     end
 

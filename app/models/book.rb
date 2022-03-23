@@ -1,6 +1,6 @@
 class Book < ApplicationRecord
   
-  validates :is_active, presence: true
+  #validates :is_active, presence: true
 
   after_create :set_total_available
   

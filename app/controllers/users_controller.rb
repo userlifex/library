@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     if user.is_active
       render json: { data: user }, status: :ok
     else
-      render json: { message: "User not found" }, status: :bad_request
+      render json: { message: "User not found" }, status: :not_found
     end
   end
 
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
   def create
     user = User.new(user_params)
     if user.save
-      render json: { data: user }, status: :ok
+      render json: { data: user }, status: :created
     else
       render json: { data: user.errors.full_messages }, status: :bad_request
     end
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
         render json: { data: user.errors.full_messages }, status: :bad_request
       end
     else 
-      render json: { data: "User not found"}, status: :bad_request
+      render json: { data: "User not found"}, status: :not_found
     end
 
   end
@@ -55,7 +55,7 @@ class UsersController < ApplicationController
         render json: { data: user.errors.full_messages }, status: :bad_request
       end
     else 
-      render json: { data: "User not found"}, status: :bad_request
+      render json: { data: "User not found"}, status: :not_found
     end
   end
 
